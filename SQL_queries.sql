@@ -208,6 +208,32 @@ i.inventory_id= r.inventory_id and
 s.store_id = i.store_id
 GROUP BY s.store_id;
 
+-- find each store its store id, city, and country
+SELECT store.store_id, store.address_id, address.city_id, city.country_id, country.country
+WHERE 
+store.address_id=address.address_id AND
+address.city_id=city.city_id AND
+city.country_id=country.country_id;
+
+-- create a view
+CREATE VIEW store_revenue AS
+SELECT SUM(amount)
+FROM payment p
+INNER JOIN rental r
+ON (r.rental_id=p.rental_id)
+INNER JOIN inventory i
+ON (i.inventory_id= r.inventory_id)
+INNER JOIN store s
+ON (s.store_id = i.store_id)
+GROUP BY s.store_id;
+
+SELECT * FROM store_revenue
+
+-- delete the view
+DROP VIEW store_revenue;
+
+
+
 
 
 
